@@ -5,7 +5,7 @@ async def unsplash_tools():
     """Create Unsplash MCP tool client."""
     params = {
         "command": "python",
-        "args": ["-m", "backend.app.mcps.unsplash_mcp"],
+        "args": ["/Users/yee/vscode/project/trip-planner-agent/backend/app/mcps/unsplash_mcp.py"],
     }
 
     client, tools = await create_mcp_stdio_client("unsplash_mcp", params)

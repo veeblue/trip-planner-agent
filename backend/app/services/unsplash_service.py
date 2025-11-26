@@ -29,12 +29,12 @@ class UnsplashService:
             "Authorization": f"Client-ID {access_key}"
         }
 
-    def search_photos(
+    async def search_photos(
             self,
             query: str,
             page: int = 1,
             per_page: int = 10,
-            orientation: Optional[str] = None,
+            orientation: Optional[str] = "landscape",
             color: Optional[str] = None,
             order_by: str = "relevant"
     ) -> Dict:
@@ -70,7 +70,7 @@ class UnsplashService:
         response.raise_for_status()
         return response.json()
 
-    def get_random_photo(
+    async def get_random_photo(
             self,
             query: Optional[str] = None,
             orientation: Optional[str] = None,
@@ -99,7 +99,7 @@ class UnsplashService:
         response.raise_for_status()
         return response.json()
 
-    def get_photo(self, photo_id: str) -> Dict:
+    async def get_photo(self, photo_id: str) -> Dict:
         """
         获取指定图片详情
 
@@ -114,7 +114,7 @@ class UnsplashService:
         response.raise_for_status()
         return response.json()
 
-    def track_download(self, download_location: str) -> None:
+    async def track_download(self, download_location: str) -> None:
         """
         跟踪下载（API 要求）
         当用户下载或使用图片时必须调用此方法
@@ -125,7 +125,7 @@ class UnsplashService:
         response = requests.get(download_location, headers=self.headers)
         response.raise_for_status()
 
-    def download_photo(self, photo_url: str, save_path: str) -> None:
+    async def download_photo(self, photo_url: str, save_path: str) -> None:
         """
         下载图片到本地
 
@@ -140,7 +140,7 @@ class UnsplashService:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
 
-    def get_attribution_text(self, photo: Dict) -> str:
+    async def get_attribution_text(self, photo: Dict) -> str:
         """
         生成版权归属文本（API 要求必须显示）
 
@@ -156,7 +156,7 @@ class UnsplashService:
 
         return f"Photo by {photographer_name} ({photographer_link}) on Unsplash ({unsplash_link})"
 
-    def get_picture_url(self, query: str) -> Optional[str]:
+    async def get_picture_url(self, query: str) -> Optional[str]:
         """
         根据关键词获取一张图片的常规尺寸 URL
 
@@ -166,7 +166,7 @@ class UnsplashService:
         Returns:
             图片的常规尺寸 URL 或 None
         """
-        results = self.search_photos(query=query, per_page=1)
+        results = await self.search_photos(query=query, per_page=1)
         if results['results']:
             return results['results'][0]['urls']['regular']
         return None

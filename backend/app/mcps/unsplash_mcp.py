@@ -1,7 +1,12 @@
 from fastmcp import FastMCP
-
-from backend.app.services.unsplash_service import  get_unsplash_service
+import sys
+from pathlib import Path
 import os
+try:
+    from backend.app.services.unsplash_service import get_unsplash_service
+except ImportError:
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
+    from backend.app.services.unsplash_service import get_unsplash_service
 mcp = FastMCP("Unsplash Search Tool")
 
 @mcp.tool("get_unsplash_pic_url")

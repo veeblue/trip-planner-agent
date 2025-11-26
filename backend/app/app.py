@@ -3,7 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from backend.app.config import get_settings, validate_config, print_config, settings
-from backend.app.api.routers import map as map_routers
+from backend.app.api.routers import map as map_routers, poi, trip
 
 
 @asynccontextmanager
@@ -51,6 +51,8 @@ app.add_middleware(
 )
 
 app.include_router(map_routers.router, prefix="/api")
+app.include_router(poi.router, prefix="/api")
+app.include_router(trip.router, prefix="/api")
 
 if __name__ == '__main__':
     import uvicorn
